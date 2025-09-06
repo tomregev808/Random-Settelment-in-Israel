@@ -1,27 +1,10 @@
-import requests
-
-
-import random
-from flask import Flask
+from flask import Flask, render_template, request
 import os
 
-def get_name ():
+from data import get_info
 
 
-    d = requests.get ("https://data.gov.il/api/3/action/datastore_search?resource_id=5c78e9fa-c2e2-4771-93ff-7f400a12f7ba")
 
-    dict = d.json()
-
-    list = dict["result"]["records"]
-    list.pop(0)
-
-    names = []
-    for record in list:
-        names.append (record ["שם_ישוב"])
-
-    name = random.choice(names)
-
-    return name
 
 
 
@@ -43,9 +26,16 @@ def create_app(test_config=None):
     except OSError:
         pass
 
-    @app.route('/', methods=['get', 'post'])
+    @app.route('/', methods=['GET', 'POST'])
     def index ():
-        return (get_name())
+            
+            if request.method == 'POST':
+                info = get_info 
+                chosen = {'name': info.get_name(), 'religion':None, 'devout':None}
+                return render_template("index.html", settlement=chosen)
+            return render_template("index.html")
+
+
 
     return app
 

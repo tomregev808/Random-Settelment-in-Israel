@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="he">
+<head>
+    <meta charset="UTF-8">
+    <title>יישוב אקראי</title>
+</head>
+<body>
+    <h1>בחר יישוב אקראי</h1>
+    <form method="POST">
+        <h3>דת</h3>
+        <label><input type="checkbox" name="religion" value="יהודי"> יהודי</label><br>
+        <label><input type="checkbox" name="religion" value="נוצרי"> נוצרי</label><br>
+        <label><input type="checkbox" name="religion" value="מוסלמי"> מוסלמי</label><br>
+        <label><input type="checkbox" name="religion" value="דרוזי"> דרוזי</label><br>
+        <label><input type="checkbox" name="religion" value="אחר"> אחר</label><br>
+
+        <h3>רמת דתיות</h3>
+        <label><input type="checkbox" name="devout" value="חילוני"> חילוני</label><br>
+        <label><input type="checkbox" name="devout" value="מסורתי"> מסורתי</label><br>
+        <label><input type="checkbox" name="devout" value="דתי"> דתי</label><br>
+        <label><input type="checkbox" name="devout" value="דתי מאוד"> דתי מאוד</label><br>
+
+        <br>
+        <button type="submit">מצא יישוב</button>
+    </form>
+
+    <hr>
+
+    {% if settlement %}
+        <h2>יישוב אקראי: {{ settlement.name }}</h2>
+        <p>דת: {{ settlement.religion }}</p>
+        <p>רמת דתיות: {{ settlement.devout }}</p>
+    {% elif settlement is not none %}
+        <h2>לא נמצאו יישובים מתאימים</h2>
+    {% endif %}
+</body>
+</html>
