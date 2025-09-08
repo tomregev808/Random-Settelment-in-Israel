@@ -27,9 +27,9 @@
     <hr>
 
     {% if settlement %}
-        <h2>יישוב אקראי: {{ settlement.name }}</h2>
-        <p>דת: {{ settlement.religion }}</p>
-        <p>רמת דתיות: {{ settlement.devout }}</p>
+        <h2>יישוב אקראי: {{ settlement [0] ['name'] }}</h2>
+        <p>דת: {{ settlement [0] ['religion']  }}</p>
+        <p>רמת דתיות: {{ settlement [0] ['devout']}}</p>
     {% elif settlement is not none %}
         <h2>לא נמצאו יישובים מתאימים</h2>
     {% endif %}

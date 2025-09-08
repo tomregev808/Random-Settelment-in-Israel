@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request
 import os
-
-from data import get_info
+import click
+from app import db
 
 
 
@@ -26,12 +26,23 @@ def create_app(test_config=None):
     except OSError:
         pass
 
+    @app.cli.command("init-db")
+    def init_db_command():
+        """Clear the existing data and create new tables."""
+        db.init_db()
+        click.echo("Initialized the database.")
+
+
     @app.route('/', methods=['GET', 'POST'])
     def index ():
             
             if request.method == 'POST':
-                info = get_info 
-                chosen = {'name': info.get_name(), 'religion':None, 'devout':None}
+                data = db.get_db()
+
+                chosen = data.execute ("SELECT * FROM settelments ORDER BY RANDOM() LIMIT 1;").fetchall()
+
+
+                print (chosen [0] ['name'])
                 return render_template("index.html", settlement=chosen)
             return render_template("index.html")
 
