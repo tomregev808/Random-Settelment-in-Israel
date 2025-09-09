@@ -31,6 +31,7 @@
 
     {% if settlement %}
         <h2>יישוב אקראי: {{ settlement ['name'] }}</h2>
+        <p>אוכלוסייה: {{ settlement ['pop']}}</p>
         <p>דת: {{ settlement ['religion']  }}</p>
         <p>רמת דתיות: {{ settlement ['devout']}}</p>
     {% elif settlement is not none %}
