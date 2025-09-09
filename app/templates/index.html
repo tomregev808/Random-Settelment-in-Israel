@@ -1,41 +1,135 @@
 <!DOCTYPE html>
-<html lang="he">
+<html lang="he" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <title>יישוב אקראי</title>
+  <meta charset="UTF-8">
+  <title>יישוב אקראי</title>
+  <style>
+    body {
+      font-family: "Alef", Arial, sans-serif;
+      background-color: #f8f9fa;
+      color: #212529;
+      margin: 0;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    h1 {
+      text-align: center;
+      color: #0d6efd;
+      margin-bottom: 30px;
+    }
+
+    form {
+      max-width: 500px;
+      margin: auto;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    h3 {
+      margin-top: 20px;
+      color: #495057;
+    }
+
+    label {
+      display: block;
+      margin: 6px 0;
+    }
+
+    .select-all {
+      font-size: 0.9em;
+      margin-bottom: 10px;
+      display: block;
+      cursor: pointer;
+      color: #0d6efd;
+    }
+
+    button {
+      display: block;
+      width: 100%;
+      padding: 10px;
+      margin-top: 20px;
+      background: #0d6efd;
+      border: none;
+      color: white;
+      font-size: 16px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #0b5ed7;
+    }
+
+    hr {
+      margin: 30px 0;
+    }
+
+    .result {
+      max-width: 500px;
+      margin: auto;
+      text-align: center;
+      background: #ffffff;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .error {
+      color: red;
+      font-weight: bold;
+    }
+  </style>
 </head>
 <body>
-    <h1>בחר יישוב אקראי</h1>
-    <form method="POST">
-        <h3>דת</h3>
-        <label><input type="checkbox" name="religion" value="יהודים"> יהודי</label><br>
-        <label><input type="checkbox" name="religion" value="נוצרים"> נוצרי</label><br>
-        <label><input type="checkbox" name="religion" value="מוסלמים"> מוסלמי</label><br>
-        <label><input type="checkbox" name="religion" value="דרוזים"> דרוזי</label><br>
-        <label><input type="checkbox" name="religion" value="דת אחרת"> אחר</label><br>
+  <h1>בחר יישוב אקראי</h1>
 
-        <h3>רמת דתיות</h3>
-        <label><input type="checkbox" name="devout" value="חילוני"> חילוני</label><br>
-        <label><input type="checkbox" name="devout" value="מסורתי"> מסורתי</label><br>
-        <label><input type="checkbox" name="devout" value="דתי/ דתי מאוד"> דתי</label><br>
-        <label><input type="checkbox" name="devout" value="חרדי"> חרדי</label><br>
+  <form method="POST">
+    <h3>דת</h3>
+    <span class="select-all" onclick="toggleGroup('religion')">בחר/בטל הכל</span>
+    <label><input type="checkbox" name="religion" value="יהודים"> יהודי</label>
+    <label><input type="checkbox" name="religion" value="נוצרים"> נוצרי</label>
+    <label><input type="checkbox" name="religion" value="מוסלמים"> מוסלמי</label>
+    <label><input type="checkbox" name="religion" value="דרוזים"> דרוזי</label>
+    <label><input type="checkbox" name="religion" value="דת אחרת"> אחר</label>
 
-        <br>
-        <button type="submit">מצא יישוב</button>
-    </form>
+    <h3>רמת דתיות</h3>
+    <span class="select-all" onclick="toggleGroup('devout')">בחר/בטל הכל</span>
+    <label><input type="checkbox" name="devout" value="חילוני"> חילוני</label>
+    <label><input type="checkbox" name="devout" value="מסורתי"> מסורתי</label>
+    <label><input type="checkbox" name="devout" value="דתי/ דתי מאוד"> דתי</label>
+    <label><input type="checkbox" name="devout" value="חרדי"> חרדי</label>
 
-    <hr>
-{% if message %}
-    <p style="color: red;">{{ message }}</p>
-{% endif %}
+    <button type="submit">מצא יישוב</button>
+  </form>
 
-    {% if settlement %}
-        <h2>יישוב אקראי: {{ settlement ['name'] }}</h2>
-        <p>אוכלוסייה: {{ settlement ['pop']}}</p>
-        <p>דת: {{ settlement ['religion']  }}</p>
-        <p>רמת דתיות: {{ settlement ['devout']}}</p>
-    {% elif settlement is not none %}
-        <h2>לא נמצאו יישובים מתאימים</h2>
-    {% endif %}
+  <hr>
+
+  {% if message %}
+    <p class="error">{{ message }}</p>
+  {% endif %}
+
+  {% if settlement %}
+    <div class="result">
+      <h2>יישוב אקראי: {{ settlement['name'] }}</h2>
+      <p>אוכלוסייה: {{ settlement['pop'] }}</p>
+      <p>דת: {{ settlement['religion'] }}</p>
+      <p>רמת דתיות: {{ settlement['devout'] }}</p>
+    </div>
+  {% elif settlement is not none %}
+    <div class="result">
+      <h2>לא נמצאו יישובים מתאימים</h2>
+    </div>
+  {% endif %}
+
+  <script>
+    function toggleGroup(name) {
+      const boxes = document.querySelectorAll(`input[name='${name}']`);
+      const allChecked = Array.from(boxes).every(box => box.checked);
+      boxes.forEach(box => box.checked = !allChecked);
+    }
+  </script>
 </body>
 </html>
